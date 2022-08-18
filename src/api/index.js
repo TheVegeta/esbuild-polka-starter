@@ -2,10 +2,10 @@ import { Router } from "utils/utils";
 
 const apiRoutes = Router();
 
-apiRoutes.get("/", async (req, res) => {
-  return res.json({
+apiRoutes.get("/", (req, res) => {
+  res.json({
     success: true,
-    msg: "api started successfully",
+    msg: "The API is working successfully.",
     data: {},
   });
 });

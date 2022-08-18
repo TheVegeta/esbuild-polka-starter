@@ -1,19 +1,16 @@
 import { json } from "@polka/parse";
-import { apiRoutes } from "api";
-import compression from "compression";
+import { apiRoutes } from "api/index";
 import cors from "cors";
 import polka from "polka";
-import { handleErr, handleJson } from "utils/utils";
+import { onError, supportJson } from "utils/utils";
 
-const app = polka();
+const app = polka({ onError });
 const port = parseInt(process.env.PORT || 8080);
 
-app.use(cors());
 app.use(json());
-app.use(handleJson);
-app.use(compression());
+app.use(cors());
+app.use(supportJson);
 
 app.use("/api", apiRoutes);
 
-app.handler = handleErr;
 app.listen(port, () => console.log(`Running on ${port}`));
