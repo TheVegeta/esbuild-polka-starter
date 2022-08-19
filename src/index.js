@@ -2,6 +2,7 @@ import { json } from "@polka/parse";
 import { apiRoutes } from "api/index";
 import cors from "cors";
 import polka from "polka";
+import "utils/init";
 import { onError, supportJson } from "utils/utils";
 
 const app = polka({ onError });

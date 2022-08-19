@@ -1,8 +1,10 @@
 import stringify from "fast-json-stable-stringify";
+import { StatusCodes } from "http-status-codes";
+import { nanoid } from "nanoid";
 import polka from "polka";
 
 export const onError = (err, req, res, next) => {
-  res.statusCode = 500;
+  res.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
   res.setHeader("content-type", "application/json").end(
     stringify({
       success: false,
@@ -19,5 +21,7 @@ export const supportJson = (req, res, next) => {
   };
   next();
 };
+
+export const randomId = (n) => nanoid(n);
 
 export const Router = () => polka({ onError });

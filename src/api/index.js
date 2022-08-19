@@ -1,4 +1,5 @@
 import { Router } from "utils/utils";
+import { fileUploadRoutes } from "./fileUpload";
 
 const apiRoutes = Router();
 
@@ -9,5 +10,6 @@ apiRoutes.get("/", (req, res) => {
     data: {},
   });
 });
+apiRoutes.use("/upload", fileUploadRoutes);
 
 export { apiRoutes };
