@@ -1,25 +1,16 @@
 import upload from "express-fileupload";
-import { fileTypeFromFile } from "file-type";
-import fs from "fs-extra";
 import { StatusCodes } from "http-status-codes";
-import path from "path";
 import { fileSize, uploadPath } from "utils/constant";
-import { randomId, Router } from "utils/utils";
+import { randomId, readFile, Router } from "utils/utils";
 
 const fileUploadRoutes = Router();
 
 fileUploadRoutes.get("/:id", async (req, res) => {
   try {
-    const file = await fileTypeFromFile(
-      path.resolve(__dirname, `uploads/${req.params.id}`)
-    );
+    const { stream, type } = await readFile(req.params.id);
 
-    const dataStream = await fs.readFile(
-      path.resolve(__dirname, `uploads/${req.params.id}`)
-    );
-
-    res.setHeader("content-type", file.mime);
-    res.end(dataStream);
+    res.setHeader("content-type", type);
+    res.end(stream);
   } catch (err) {
     res.statusCode = StatusCodes.NOT_FOUND;
     return res.json({
@@ -29,6 +20,7 @@ fileUploadRoutes.get("/:id", async (req, res) => {
     });
   }
 });
+
 fileUploadRoutes.use(upload()).post("/", async (req, res) => {
   const fileId = randomId(6);
 
